@@ -19,14 +19,14 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Get name from pom.xml
+      - name: Get artifactId from pom.xml
         id: get_artifactId
         run: echo "::set-output name=artifactId::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
 
-      - name: Expose name as an output
+      - name: Expose artifactId as an output
         run: echo "POM_ARTIFACT=${{ steps.get_artifactId.outputs.artifactId }}" >> $GITHUB_ENV
 
-      - name: Print version
+      - name: Print artifactId
         run: echo $POM_ARTIFACT
 
       - name: Get version from pom.xml
@@ -46,7 +46,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run: docker build --file src/main/docker/Dockerfile.jvm -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION} -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:latest .
+        run: docker build --file src/main/docker/Dockerfile.jvm -t ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION} -t ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:latest .
 
       - name: Push Docker image
         run: |
