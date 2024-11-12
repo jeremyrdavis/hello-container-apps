@@ -51,6 +51,5 @@ jobs:
       - name: Push Docker image
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker tag ${POM_ARTIFACT} ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION}
-          docker tag ${POM_ARTIFACT} ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:latest
+          docker tag ${POM_ARTIFACT} ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION} ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION}
