@@ -46,10 +46,9 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run: docker build --file src/main/docker/Dockerfile.jvm -t ${POM_ARTIFACT} .
+        run: docker build --file src/main/docker/Dockerfile.jvm -t ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION} -t ${POM_ARTIFACT}:latest.
 
       - name: Push Docker image
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker tag ${POM_ARTIFACT} ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION} ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}:${POM_VERSION}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${POM_ARTIFACT}
